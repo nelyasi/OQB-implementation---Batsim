@@ -43,63 +43,69 @@ def Noisy_Passive_Circuit(Steps, omega, kappa, p, backend, shots, qubits):
             print(f"An error occurred: {str(e)}")
             return None
 
-    csv_file_path = f'Output-Mixed-Passive-{num}.csv'
+    
 
     import pandas as pd
+    circuits = []
+    j = 0
 
 
-    #Circuit setup
-    q0 = QuantumRegister(1, name = 'battery')
-    q1 = QuantumRegister(1, name = 'ancilla')
-    creg  = ClassicalRegister(Steps+1)
-    qc = QuantumCircuit(q0, q1, creg)
+    for step in range(Steps):
+        Passive_Energy = 0
+        data_list = []
+        j += 1
+        num = f'{omega}-{kappa}-{j}'
+        csv_file_path = f'Output-Mixed-Passive-{num}.csv'
+        #Circuit setup
+        q0 = QuantumRegister(1, name = 'battery')
+        q1 = QuantumRegister(1, name = 'ancilla')
+        creg  = ClassicalRegister(j+1)
+        qc = QuantumCircuit(q0, q1, creg)
 
-    #Creat an empty list to save the measurement results 
-    result_  = []
+        #Creat an empty list to save the measurement results 
+        result_  = []
 
-    #Start the collisional model for arbitrary number of steps 
-    for i in range(Steps):
-        qc.append(M_gate, [q1, q0])
-        qc.h(q1)
-        qc.measure(q1, creg[i])
-        qc.barrier()
-        with qc.if_test((creg[i], 1)):
-            qc.x(q1)
-        #qc.x(q1)
-        #qc.barrier()
-    with qc.switch(creg) as case: 
-        for i in range(2**Steps):
-            with case(i):
-                #Calling the Excel file created in the prevous code and search for the decimal code to find the corresponding Theta and Phi
-                Values = get_values_from_csv(csv_file_path, i)
-                a =  Values[0]
-                b =  Values[1]
-                c =  Values[2]
-                d =  Values[3]
-                #Theta = float(real(Theta))
-                #Phi = float(real(Phi))
-                #Creating the Unitary matrix using the obtained Theta and Phi
-                matrix = [[a, c], [d, b]]
-                #Converting it into a gate 
-                Unitary = UnitaryGate(matrix, label=r'$U_{Con}$')
+        #Start the collisional model for arbitrary number of steps 
+        for i in range(j):
+            qc.append(M_gate, [q1, q0])
+            qc.h(q1)
+            qc.measure(q1, creg[i])
+            qc.barrier()
+            with qc.if_test((creg[i], 1)):
+                qc.x(q1)
+            #qc.x(q1)
+            #qc.barrier()
+        with qc.switch(creg) as case: 
+            for i in range(2**j):
+                with case(i):
+                    #Calling the Excel file created in the prevous code and search for the decimal code to find the corresponding Theta and Phi
+                    Values = get_values_from_csv(csv_file_path, i)
+                    a =  Values[0]
+                    b =  Values[1]
+                    c =  Values[2]
+                    d =  Values[3]
+                    #Theta = float(real(Theta))
+                    #Phi = float(real(Phi))
+                    #Creating the Unitary matrix using the obtained Theta and Phi
+                    matrix = [[a, c], [d, b]]
+                    #Converting it into a gate 
+                    Unitary = UnitaryGate(matrix, label=r'$U_{Con}$')
 
-                #Applying the gate to the battery qubit 
-                qc.append(Unitary,q0)
+                    #Applying the gate to the battery qubit 
+                    qc.append(Unitary,q0)
 
-    qc.measure(q0, creg[Steps])
-    qc = transpile(qc, backend=backend, initial_layout= qubits)
-    job = backend.run(qc, shots = shots)
+        qc.measure(q0, creg[j])
+        qc = transpile(qc, backend=backend, initial_layout= qubits)
+        circuits.append(qc)
+    job = backend.run(circuits, shots = shots)
     results = job.result()
     counts = results.get_counts()
+    Passive = []
+    for m in range(1, j + 1):
+        midcirc_count = marginal_counts(results.get_counts()[m-1], indices=[m])
+        Passive_E = 1- midcirc_count['0']/shots
+        Passive.append(Passive_E)    
 
-    counts = []
-    for j in range(Steps + 1):
-        midcirc_count = marginal_counts(job.result(), indices=[j]).get_counts()
-        counts.append(midcirc_count)
-        #print(f"Measurement {j} results: {counts[j]}")
-        last_shot_result = int(list(counts[j].keys())[-1][-1])
-    
-    Passive_E = 1- counts[Steps]['0']/shots
 
-    return Passive_E
+    return Passive
 

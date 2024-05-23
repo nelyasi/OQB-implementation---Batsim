@@ -4,17 +4,17 @@ from pandas import *
 from qiskit import *
 from qutip import *
 import qiskit.quantum_info
-import qiskit.visualization
 import qiskit.result
 from qiskit.circuit import SwitchCaseOp
 from qiskit.circuit.library import UnitaryGate
 from qiskit.visualization import *
 from qiskit.result import marginal_counts
 import pandas as pd
-from qiskit_ibm_runtime import Session, SamplerV2 as Sampler
+
 
 def Energy_Ergotropy(Steps, omega, kappa, backend, shots, qubits):
-    Ergo = []
+    Ergo_Circuits = []
+    Energy_Circuits = []
 
     label = f'{omega}@{kappa}'
     def get_values_from_csv(file_path, row_number):
@@ -69,13 +69,15 @@ def Energy_Ergotropy(Steps, omega, kappa, backend, shots, qubits):
             qc.reset(q1)
             qc.barrier()
         qc.measure(q0, creg[0])
-        qc = transpile(qc, backend = backend)
-        job = backend.run(qc, shots = shots)
-        results = job.result()
-        counts  = results.get_counts()
-        E  = 1 - counts['0']/shots 
+        qc = transpile(qc, backend = backend, initial_layout = qubits)
+        Energy_Circuits.append(qc)
+    job = backend.run(Energy_Circuits, shots = shots)
+    results = job.result()
+    counts = results.get_counts()
+    for i in range(Steps):
+        E  = 1 - counts[i]['0']/shots 
         Energy.append(E)
-        #print(E)
+    #print(E)
 
     #Circuit setup
     q0 = QuantumRegister(1, name = 'battery')
@@ -103,22 +105,21 @@ def Energy_Ergotropy(Steps, omega, kappa, backend, shots, qubits):
             qc.x(q0)
         qc.measure(q0, creg[0])
         qc = transpile(qc, backend = backend, initial_layout= qubits)
-        job = backend.run(qc, shots = shots)
-        results = job.result()
-        counts = results.get_counts()
-        E = counts['1']/shots
+        Ergo_Circuits.append(qc)
+    job = backend.run(Ergo_Circuits, shots = shots)
+    results = job.result()
+    counts = results.get_counts()
+    for i in range(0, Steps):
+        E = counts[i]['1']/shots
         Passive.append(E)
+    Ergo = []
+
     for k in range(len(Energy)):
         Ergotropy = Energy[k] - Passive[k]
         if Ergotropy < 0:
             Ergotropy = 0
         Ergo.append(Ergotropy)
         #print(Ergotropy)
+
     return Energy, Ergo
     
-
-
-
-
-
-
