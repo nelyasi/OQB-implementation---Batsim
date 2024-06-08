@@ -6,7 +6,6 @@ import pandas as pan
 from itertools import product
 
 def  Noisy_Passive_Unitary(Steps, Charge, pa, pd, P01, P10):
-    num = f'{Charge/np.pi}.{Steps}'
 
     #Defining The State of the Battery 
     Battery = basis(2, 0)
@@ -79,53 +78,60 @@ def  Noisy_Passive_Unitary(Steps, Charge, pa, pd, P01, P10):
 
 
 #\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
-
+    
     #Staring Loop Process To save density matix for each steps 
     Passive_Energy = 0
     data_list = []
+    j = 0
+    Passive = []
+    H  = 0.5*(qeye(2) - sigmaz())
 
+    for step in range(Steps):
+        Passive_Energy = 0
+        data_list = []
+        j += 1
+        num = f'{Charge}-{j}'
+        Trajectories, decimal = steps_sample_space(j) 
+        for Trajectory in Trajectories:
+            Density = initialize()
+            E = 0
+            for Measure_Type in Trajectory:
+                Evolved = cnot()*Ry*Density*Ry.dag()*cnot().dag()   #Charge and interact the Qubit with a specefic \theta in each step
+                Evolved = AP0*Evolved*AP0.dag()  +  AP1*Evolved*AP1.dag()
+                Evolved = pd*Noise_Identity*Evolved*Noise_Identity.dag()  +  (1-pd)*Noise_z*Evolved*Noise_z.dag()
+                if Measure_Type == 0:
+                    Meas_Den_P = Evolved*PP
+                    Probabilty_P = Meas_Den_P.tr()
+                    Meas_Den_P = Meas_Den_P/Probabilty_P
+                    P_Den = Meas_Den_P.ptrace(0)
+                    Battery = P_Den
+                    Density = tensor(Battery, Ancilla*Ancilla.dag())
+                if Measure_Type == 1:
+                    Meas_Den_M = Evolved*PM
+                    Probabilty_M = Meas_Den_M.tr()
+                    Meas_Den_M = Meas_Den_M/Probabilty_M
+                    M_Den = Meas_Den_M.ptrace(0)
+                    Battery = M_Den
+                    Density = tensor(Battery, Ancilla*Ancilla.dag())
 
-    H = 0.5*(qeye(2) - sigmaz())
-    for Trajectory in Trajectories:
-        Density = initialize()
-        E = 0
-        for Measure_Type in Trajectory:
-            Evolved = cnot()*Ry*Density*Ry.dag()*cnot().dag()   #Charge and interact the Qubit with a specefic \theta in each step
-            Evolved = pd*Noise_Identity*Evolved*Noise_Identity.dag()  +  (1-pd)*Noise_z*Evolved*Noise_z.dag()
-            Evolved = AP0*Evolved*AP0.dag()  +  AP1*Evolved*AP1.dag()
-            if Measure_Type == 0:
-                Meas_Den_P = Evolved*PP.dag()
-                Probabilty_P = Meas_Den_P.tr()
-                Meas_Den_P = Meas_Den_P/Probabilty_P
-                P_Den = Meas_Den_P.ptrace(0)
-                Battery = P_Den
-                Density = tensor(Battery, Ancilla*Ancilla.dag())
-            if Measure_Type == 1:
-                Meas_Den_M = Evolved*PM.dag()
-                Probabilty_M = Meas_Den_M.tr()
-                Meas_Den_M = Meas_Den_M/Probabilty_M
-                M_Den = Meas_Den_M.ptrace(0)
-                Battery = M_Den
-                Density = tensor(Battery, Ancilla*Ancilla.dag())
+            Rho = Battery
+            Unitary = find_unitary(Rho)
+            Matrix = Unitary.full()
+            a  = Matrix[0][0]
+            b  = Matrix[1][1]
+            c  = Matrix[0][1]
+            d  = Matrix[1][0]
+            G_Den = (Unitary*Battery*Unitary.dag())*H
+            E = G_Den.tr()
+            #print(Unitary*Battery*Unitary.dag())
+            Passive_Energy += E
+            data_list.append({'a': a, 'b': b, 'c': c, 'd': d})
 
-        Rho = Battery
-        Unitary = find_unitary(Rho)
-        Matrix = Unitary.full()
-        a  = Matrix[0][0]
-        b  = Matrix[1][1]
-        c  = Matrix[0][1]
-        d  = Matrix[1][0]
-        G_Den = (Unitary*Battery*Unitary.dag())*H
-        E = G_Den.tr()
-        #print(Unitary*Battery*Unitary.dag())
-        Passive_Energy += E
-        data_list.append({'a': a, 'b': b, 'c': c, 'd': d})
+        # Convert the list of dictionaries to a DataFrame
+        df = pan.DataFrame(data_list)
+        # Save the DataFrame to an Excel file
+        csv_file_path = f'Output-Mixed-Passive-{num}.csv'
+        df.to_csv(csv_file_path, index=False, header=False)
+        Passive.append(Passive_Energy/2**j)
 
-    # Convert the list of dictionaries to a DataFrame
-    df = pan.DataFrame(data_list)
-    # Save the DataFrame to an Excel file
-    csv_file_path = f'Output-Mixed-Passive-{num}.csv'
-    df.to_csv(csv_file_path, index=False, header=False)
-
-    return Passive_Energy/2**Steps
-                
+    return Passive
