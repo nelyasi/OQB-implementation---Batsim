@@ -1,7 +1,7 @@
 ![BatSim Package Overview](BatSim_Package_Overview.png)
 
 
-# BatSim: Battery Simulation Package
+# BatSim
 
 ## Overview
 
