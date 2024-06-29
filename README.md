@@ -45,8 +45,7 @@ To install the BatSim package, clone the repository and install the required dep
 ```bash
 git clone https://github.com/your-repo/BatSim.git
 cd BatSim
-pip install -r requirements.txt
-
+```
 
 ## Usage
 
@@ -135,14 +134,10 @@ data_plot.compare(Ergotropy_Theory=Ergotropy_Theory,
                   file_name="compare")
 ```
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## Citing 
 
-## Acknowledgments
 
-We would like to thank the contributors and the community for their support and contributions to this project.
 
 ```
 
-This `README.md` file provides a comprehensive overview of your BatSim package, including installation, usage, and explanations of its structure and components. Adjust the content as needed to match your project's specific details and requirements.
