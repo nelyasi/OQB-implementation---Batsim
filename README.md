@@ -1,7 +1,6 @@
 ![BatSim Package Overview](BatSim_Package_Overview.png)
 
 
-```markdown
 # BatSim: Battery Simulation Package
 
 ## Overview
@@ -47,7 +46,7 @@ To install the BatSim package, clone the repository and install the required dep
 git clone https://github.com/your-repo/BatSim.git
 cd BatSim
 pip install -r requirements.txt
-```
+
 
 ## Usage
 
