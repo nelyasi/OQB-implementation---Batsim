@@ -1,6 +1,5 @@
 ![BatSim Package Overview](BatSim_Package_Overview.png)
 
-Certainly! Here's a `README.md` file based on your explanations:
 
 ```markdown
 # BatSim: Battery Simulation Package
