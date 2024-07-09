@@ -43,7 +43,7 @@ def specefications(Ergotropy_Theory, Ergotropy_Im, Daemonic_Theory, Daemonic_Im,
 
     # Customize plot if legend is requested
     if legend:
-        plt.xlabel('Steps', fontdict=font, fontsize=12)
+        plt.xlabel('Steps', )
         plt.ylabel('Energy', fontdict=font, fontsize=12)
         plt.title('Daemonic and Unconditional Work Extraction ', fontdict=font, fontsize=12)
         plt.tick_params(direction='in', which='both')

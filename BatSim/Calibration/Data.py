@@ -55,8 +55,8 @@ def Noise_Data(backend, shots, qubits, simulator):
     P01 = counts[1]['1'] / shots  # Probability of ancilla being 0 when battery is |1>
 
     # Extract T1 and T2 values for the battery qubit
-    pa = 1 - exp(-0.66 / backend_data['qubits'][Battery][0]['value'])  # T1 relaxation probability
-    pd = exp(-0.66 / backend_data['qubits'][Battery][1]['value'])     # T2 dephasing probability
+    pa = 1 - exp(-1.44 / backend_data['qubits'][Battery][0]['value'])  # T1 relaxation probability
+    pd = exp(-1.44/ backend_data['qubits'][Battery][1]['value'])     # T2 dephasing probability
 
     # Print probabilities and decoherence rates for debugging or information
     print(f"P01: {P01}, P10: {P10}, pa: {pa}, pd: {pd}")

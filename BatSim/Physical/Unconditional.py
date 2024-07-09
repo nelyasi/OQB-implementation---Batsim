@@ -124,7 +124,7 @@ def Implement(Steps, omega, kappa, backend, shots, qubits):
         qc.measure(q0, creg[0])
         qc = transpile(qc, backend = backend, initial_layout= qubits)
         Ergo_Circuits.append(qc)
-    Job = backend.run(Ergo_Circuits, shots = shots)
+    job = backend.run(Ergo_Circuits, shots = shots)
     results = job.result()
     counts = results.get_counts()
     for i in range(0, Steps):
