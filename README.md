@@ -17,8 +17,7 @@ This sub-package is based on a model that provides the charging of the quantum b
 
 ### 2. BestQubits
 This sub-package is designed for finding the best qubits in terms of low readout error to maximize the power of IBM devices and enhance the results. It includes:
-- **Select**: Module with two attributes:
-  - **Q_RyCnot**: Selects the best qubits based on the RyCnot model.
+- **Select**: Module with one attributes:
   - **Q_Physical**: Selects the best qubits based on the Physical model.
 
 ### 3. Calibration
