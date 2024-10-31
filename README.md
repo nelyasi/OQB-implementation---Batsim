@@ -5,34 +5,28 @@
 
 ## Overview
 
-In this notebook, we aim to provide the necessary code for producing the plots shown in our paper. To simplify the code, we have packaged all the necessary functions into a package called "BatSim," which stands for Battery Simulation. This package consists of different parts, as illustrated below.
+In this notebook, we provide a collection of notebooks designed for easy reproduction of the plots shown in the paper titled ["Experimental simulation of daemonic work extraction in open quantum batteries on a digital quantum computer"](https://arxiv.org/abs/2410.16567). To streamline the code, all necessary functions have been consolidated into a package called "BatSim" (Battery Simulation), with its components detailed below.
+
 
 ## Package Structure
 
-The BatSim package is composed of five main sub-packages:
+The BatSim package is composed of four main sub-packages:
 
 ### 1. Physical
 This sub-package is based on a model that provides the charging of the quantum battery (QB) and correlates it with an ancilla using the unitary gate generated from the Hamiltonian.
 
-### 2. RyCnot
-This sub-package uses Ry rotation for charging the QB and a CNOT gate for correlating with the ancilla. Both Physical and RyCnot sub-packages have a similar structure:
-- **Daemonic**: Responsible for Daemonic work extraction.
-- **Unconditional**: Responsible for unconditional work extraction.
-- **Theory**: Contains codes needed for theoretical results.
-- **Implement**: Contains codes for implementation results on real hardware.
-
-### 3. BestQubits
+### 2. BestQubits
 This sub-package is designed for finding the best qubits in terms of low readout error to maximize the power of IBM devices and enhance the results. It includes:
 - **Select**: Module with two attributes:
   - **Q_RyCnot**: Selects the best qubits based on the RyCnot model.
   - **Q_Physical**: Selects the best qubits based on the Physical model.
 
-### 4. Calibration
+### 3. Calibration
 This sub-package includes:
 - **Data**: Module with one attribute:
   - **Noise_Data**: Obtains the parameters needed for engineering our proposed noise model to mimic hardware behavior in theoretical calculations and find the best optimal unitary gates.
 
-### 5. Plot
+### 4. Plot
 This sub-package is designed for plotting the results in two modes: noisy and ideal. It includes:
 - **data_plot**: Module with two attributes:
   - **specifications**: For single plotting.
@@ -46,8 +40,18 @@ To install the BatSim package, clone the repository and install the required dep
 git clone https://github.com/your-repo/BatSim.git
 cd BatSim
 ```
+## Notebook Structure
 
-## Usage
+This repository contains several notebooks, each with a specific purpose:
+
+-**RunMe_Main**: This main notebook executes our proposed protocol and model on IBM devices, generating final results and plots based on selected Hamiltonian parameters.
+
+-**RunJobIDs_Online**: This notebook connects directly to the IBM Cloud to retrieve and download data using Job IDs, allowing for easy access to plot results shown in the paper.
+
+-**RunJobIDs_Offline**: For offline access, we’ve saved jobs in `.json` format in the "Jobs" folder. This notebook enables result retrieval without an internet connection. 
+
+
+## RunMe_Main
 
 ### Setting Parameters
 
@@ -55,8 +59,7 @@ In your notebook, you can set the parameters for running the code as follows:
 
 ```python
 Steps = 10
-Charge = 6 * pi / 10
-omega = 1
+alpha = 1
 kappa = 1
 shots = 10000
 ```
@@ -100,42 +103,32 @@ Daemonic_Theory = [xi - yi for xi, yi in zip(Energy_Theory, Passive_Theory)]
 Daemonic_Im = [xi - yi for xi, yi in zip(Energy_Im, Passive_Im)]
 ```
 
-### Plotting Results
+## RunJobIDs_Online
 
-Generate specific plots using the data_plot module:
+This notebook connects directly to IBM systems to retrieve data for the plots shown in the paper, requiring an internet connection. Each run generates two plots: one comparing the noisy and ideal models, and another showing the ideal results independently. 
+
+As described in the paper, there are four plots for each Hamiltonian parameter set, with \(\kappa\) values of 1 or 2. To produce the plots, set \(\kappa\) to either 1 or 2 and adjust `figure_num` from 0 to 3 to generate all four plots.
 
 ```python
-# Noisy case
-data_plot.specefications(Ergotropy_Theory=Ergotropy_Theory, 
-                         Ergotropy_Im=Ergotropy_Im, 
-                         Daemonic_Theory=Daemonic_Theory, 
-                         Daemonic_Im=Daemonic_Im, 
-                         legend=True, 
-                         file_name="Noisy")
-
-# Ideal case
-data_plot.specefications(Ergotropy_Theory=Ergotropy_TheoryIdeal, 
-                         Ergotropy_Im=Ergotropy_ImIdeal, 
-                         Daemonic_Theory=Daemonic_TheoryIdeal, 
-                         Daemonic_Im=Daemonic_ImIdeal, 
-                         legend=True, 
-                         file_name="Ideal")
-
-# Comparison plot
-data_plot.compare(Ergotropy_Theory=Ergotropy_Theory, 
-                  Ergotropy_TheoryIdeal=Ergotropy_TheoryIdeal, 
-                  Ergotropy_Im=Ergotropy_Im, 
-                  Ergotropy_ImIdeal=Ergotropy_ImIdeal,
-                  Daemonic_Theory=Daemonic_Theory,  
-                  Daemonic_TheoryIdeal=Daemonic_TheoryIdeal, 
-                  Daemonic_Im=Daemonic_Im, 
-                  Daemonic_ImIdeal=Daemonic_ImIdeal, 
-                  legend=True, 
-                  file_name="compare")
+Steps = 10  # Number of steps for the collisional model
+alpha = 1  # drving field parameter for the physical Hamiltonian model
+kappa = 1 # coupling parameter for the physical Hamiltonian model
+shots = 10000  # Number of shots for running the circuit
+figure_num = 0 #In the paper, there are four samples for the two modes of paramters \kappa =  1 or 2. To have the first, seocond, third and the fourth plots, you have to put 0, 1, 2 and 3 respectively 
 ```
 
 
-## Citing 
+
+
+
+## RunJobIDs_Offline
+
+
+The usage of this notebook is the same as the previous one, with the only difference being that the jobs are downloaded locally in the "Jobs" folder in JSON format, allowing use without an internet connection.
+
+
+## Authors 
+Seyed Navid Elyasi, Matteo A. C. Rossi, Marco G. Genoni
 
 
 
