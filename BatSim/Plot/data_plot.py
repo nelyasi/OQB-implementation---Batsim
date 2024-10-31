@@ -68,7 +68,7 @@ def specefications(Ergotropy_Theory, Ergotropy_Im, Daemonic_Theory, Daemonic_Im,
     return plt.show()
 
 
-def compare(std_dev, std_devIdeal, Ergotropy_TheoryIdeal, error, Ergotropy_ImIdeal, Daemonic_Theory, Daemonic_TheoryIdeal, Daemonic_Im, Daemonic_ImIdeal, noise, legend, file_name):
+def compare(std_dev, std_devIdeal, Ergotropy_TheoryIdeal, error, Ergotropy_ImIdeal, Daemonic_Theory, Daemonic_TheoryIdeal, Daemonic_Im, Daemonic_ImIdeal, noise, legend, file_name, kappa):
     """
     Plot data for Ergotropy and Daemonic work.
 
@@ -160,9 +160,14 @@ def compare(std_dev, std_devIdeal, Ergotropy_TheoryIdeal, error, Ergotropy_ImIde
         box = ax.get_position()
         box = ax.get_position()
 
+
         # Adjust legend position to the right of the plot
         ax = plt.subplot(111)
-        ax.legend(loc='center', bbox_to_anchor=(0.5, 0.3),  prop = font, ncol=2)
+        if kappa == 1:
+                ax.legend(loc='center', bbox_to_anchor=(0.5, 0.3),  prop = font, ncol=2)
+        elif kappa ==2:
+                ax.legend(loc='upper left',  prop = font, ncol=2)
+
     
     directory = "Plots"  # Use raw string to handle backslashes in Windows paths
     filename = f'{file_name}.pdf'
