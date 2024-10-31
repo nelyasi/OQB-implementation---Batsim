@@ -44,11 +44,11 @@ cd BatSim
 
 This repository contains several notebooks, each with a specific purpose:
 
-**RunMe_Main**: This main notebook executes our proposed protocol and model on IBM devices, generating final results and plots based on selected Hamiltonian parameters.
+-**RunMe_Main**: This main notebook executes our proposed protocol and model on IBM devices, generating final results and plots based on selected Hamiltonian parameters.
 
-**RunJobIDs_Online**: This notebook connects directly to the IBM Cloud to retrieve and download data using Job IDs, allowing for easy access to plot results shown in the paper.
+-**RunJobIDs_Online**: This notebook connects directly to the IBM Cloud to retrieve and download data using Job IDs, allowing for easy access to plot results shown in the paper.
 
-**RunJobIDs_Offline**: For offline access, we’ve saved jobs in `.json` format in the "Jobs" folder. This notebook enables result retrieval without an internet connection. 
+-**RunJobIDs_Offline**: For offline access, we’ve saved jobs in `.json` format in the "Jobs" folder. This notebook enables result retrieval without an internet connection. 
 
 
 ## RunMe_Main
