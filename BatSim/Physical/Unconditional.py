@@ -176,7 +176,7 @@ def Theory(Steps, omega, kappa, pa, pd):
     M_Unitary = (-1j * H).expm()
     Noise_Identity = tensor(qeye(2), qeye(2))
     Noise_z = tensor(sigmaz(), qeye(2))
-    AP0 = tensor(Qobj([[1, 0], [0, sqrt(1 - pa)]]), qeye(2))
+    AP0 = tensor(Qobj([[1, 0], [0, sqrt(1-pa)]]), qeye(2))
     AP1 = tensor(Qobj([[0, sqrt(pa)], [0, 0]]), qeye(2))
 
     directory = "Unitaries"
@@ -191,7 +191,7 @@ def Theory(Steps, omega, kappa, pa, pd):
     data_list = []
     for step in range(0, Steps):
         Evolved = M_Unitary*Density*M_Unitary.dag()   #Charge and interact the Qubit with a specefic \theta in each step
-        Evolved = pd*Noise_Identity*Evolved*Noise_Identity.dag()  +  (1-pd)*Noise_z*Evolved*Noise_z.dag()
+        Evolved = (1-pd)*Noise_Identity*Evolved*Noise_Identity.dag()  +  (pd)*Noise_z*Evolved*Noise_z.dag()
         Evolved = AP0*Evolved*AP0.dag()  +  AP1*Evolved*AP1.dag()
         Battery = Evolved.ptrace(0)
         Density = tensor(Battery, Ancilla*Ancilla.dag())

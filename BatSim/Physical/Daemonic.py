@@ -55,7 +55,7 @@ def Theory(Steps, omega, kappa, pa, pd, P01, P10):
     # Define noise operators
     Noise_Identity = tensor(qeye(2), qeye(2))
     Noise_z = tensor(sigmaz(), qeye(2))
-    AP0 = tensor(Qobj([[1, 0], [0, sqrt(1 - pa)]]), qeye(2))
+    AP0 = tensor(Qobj([[1, 0], [0, sqrt(1-pa)]]), qeye(2))
     AP1 = tensor(Qobj([[0, sqrt(pa)], [0, 0]]), qeye(2))
 
     # Define the Hamiltonian and the unitary gate for charging
@@ -126,7 +126,7 @@ def Theory(Steps, omega, kappa, pa, pd, P01, P10):
 
             for Measure_Type in Trajectory:
                 Evolved = M_Unitary * Density * M_Unitary.dag()  # Charge and interact the qubit with a specific theta in each step
-                Evolved = pd * Noise_Identity * Evolved * Noise_Identity.dag() + (1 - pd) * Noise_z * Evolved * Noise_z.dag()
+                Evolved = (1 - pd) * Noise_Identity * Evolved * Noise_Identity.dag() + pd * Noise_z * Evolved * Noise_z.dag()
                 Evolved = AP0 * Evolved * AP0.dag() + AP1 * Evolved * AP1.dag()
 
                 if Measure_Type == 0:
@@ -249,9 +249,11 @@ def Implement(Steps, omega, kappa, backend, shots, qubits):
             qc.append(M_gate, [q1, q0])
             qc.h(q1)
             qc.measure(q1, creg[i])
-            qc.barrier()
+            #qc.barrier()
             with qc.if_test((creg[i], 1)):
                 qc.x(q1)
+            #qc.reset(q1)
+            #qc.barrier()
         
         with qc.switch(creg) as case: 
             for i in range(2**j):
@@ -281,12 +283,14 @@ def Implement(Steps, omega, kappa, backend, shots, qubits):
     results = job.result()
     counts = results.get_counts()
     Passive = []
+    
 
     # Calculate passive energy values
     for m in range(1, j + 1):
         midcirc_count = marginal_counts(results.get_counts()[m - 1], indices=[m])
         Passive_E = 1 - midcirc_count['0'] / shots
-        Passive.append(Passive_E)    
+        Passive.append(Passive_E)   
+
 
     return Passive
 

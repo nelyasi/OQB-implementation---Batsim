@@ -1,36 +1,31 @@
-```mermaid
 graph TD
-    A[BatSim Package] --> B1[Physical]
-    A --> B2[RyCnot]
-    A --> B3[BestQubits]
-    A --> B4[Calibration]
-    A --> B5[Plot]
+    A["BatSim (Battery Simulation)"]
 
-    B1 --> C1[Daemonic]
-    B1 --> C2[Unconditional]
+    %% Main sub-packages
+    A --> B["Physical"]
+    A --> C["BestQubits"]
+    A --> D["Calibration"]
+    A --> E["Plot"]
 
-    B2 --> C3[Daemonic]
-    B2 --> C4[Unconditional]
+    %% Physical sub-package
+    B --> B1["Daemonic"]
+    B --> B2["Unconditional"]
+    B1 --> B1a["Theory"]
+    B1 --> B1b["Implement"]
+    B2 --> B2a["Theory"]
+    B2 --> B2b["Implement"]
 
-    C1 --> D1[Theory]
-    C1 --> D2[Implement]
+    %% BestQubits sub-package
+    C --> C1["Select"]
+    C1 --> C1a["Q_Physical"]
 
-    C2 --> D3[Theory]
-    C2 --> D4[Implement]
+    %% Calibration sub-package
+    D --> D1["Data"]
+    D1 --> D1a["Noise_Data"]
 
-    C3 --> D5[Theory]
-    C3 --> D6[Implement]
-
-    C4 --> D7[Theory]
-    C4 --> D8[Implement]
-
-    B3 --> E1[Select]
-    E1 --> F1[Q_RyCnot]
-    E1 --> F2[Q_Physical]
-
-    B4 --> E2[Data]
-    E2 --> F3[Noise_Data]
-
-    B5 --> E3[data_plot]
-    E3 --> F4[specifications]
-    E3 --> F5[compare]
+    %% Plot sub-package
+    E --> E1["Single Mode"]
+    E --> E2["Comparison Mode"]
+    E --> E3["data_plot"]
+    E3 --> E3a["specifications"]
+    E3 --> E3b["compare"]
