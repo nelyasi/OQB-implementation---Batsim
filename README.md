@@ -5,7 +5,7 @@
 
 ## Overview
 
-In this notebook, we provide a collection of notebooks designed for easy reproduction of the plots shown in the paper titled ["Experimental simulation of daemonic work extraction in open quantum batteries on a digital quantum computer"](https://arxiv.org/abs/2410.16567). To streamline the code, all necessary functions have been consolidated into a package called "BatSim" (Battery Simulation), with its components detailed below.
+In this repository, we provide a collection of notebooks designed for easy reproduction of the plots shown in the paper titled ["Experimental simulation of daemonic work extraction in open quantum batteries on a digital quantum computer"](https://arxiv.org/abs/2410.16567). To streamline the code, all necessary functions have been consolidated into a package called "BatSim" (Battery Simulation), with its components detailed below.
 
 
 ## Package Structure
