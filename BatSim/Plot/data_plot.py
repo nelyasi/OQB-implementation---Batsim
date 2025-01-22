@@ -176,4 +176,3 @@ def compare(std_dev, std_devIdeal, Ergotropy_TheoryIdeal, error, Ergotropy_ImIde
     # Save and display the plot
     plt.savefig(filepath, format="pdf", dpi=600, bbox_inches='tight')
     return plt.show()
-

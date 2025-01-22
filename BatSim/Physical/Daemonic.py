@@ -11,7 +11,7 @@ from itertools import product
 import os
 
 
-def Theory(Steps, omega, kappa, pa, pd, P01, P10):
+def Theory(Steps, omega, kappa, pa, pd, P01, P10, m):
     """
     Generate and run quantum circuits for a noisy passive unitary evolution.
 
@@ -49,8 +49,23 @@ def Theory(Steps, omega, kappa, pa, pd, P01, P10):
     P11 = 1 - P01
     P0 = P00 * basis(2, 0) * basis(2, 0).dag() + P01 * basis(2, 1) * basis(2, 1).dag()
     P1 = P11 * basis(2, 1) * basis(2, 1).dag() + P10 * basis(2, 0) * basis(2, 0).dag()
-    PP = tensor(qeye(2), snot() * P0 * snot().dag())
-    PM = tensor(qeye(2), snot() * P1 * snot().dag())
+    TRY = Qobj([[1/sqrt(2), 1/sqrt(2)], [1/sqrt(2)*1j, -1/sqrt(2)*1j]])
+    if m == 'X':
+        #Measurment in Sigma X basis 
+        PP = tensor(qeye(2), snot() * P0 * snot().dag())
+        PM = tensor(qeye(2), snot() * P1 * snot().dag())
+        print("X is selected")
+    #Measurment in Sigma Z basis 
+    elif m == 'Z':
+        PP = tensor(qeye(2), P0)
+        PM = tensor(qeye(2), P1)
+        print("Z is selected")
+    #Measurment in Sigma y basis 
+    else:
+        PP = tensor(qeye(2), TRY * P0 * TRY.dag())
+        PM = tensor(qeye(2), TRY * P1 * TRY.dag())
+        print("Y is selected ")
+      
     
     # Define noise operators
     Noise_Identity = tensor(qeye(2), qeye(2))
@@ -169,7 +184,7 @@ def Theory(Steps, omega, kappa, pa, pd, P01, P10):
 
 
 
-def Implement(Steps, omega, kappa, backend, shots, qubits):
+def Implement(Steps, omega, kappa, backend, shots, qubits, m):
     """
     Generate and run quantum circuits for a noisy passive energy calculation.
 
@@ -193,6 +208,8 @@ def Implement(Steps, omega, kappa, backend, shots, qubits):
     # Generate the Unitary gate for the system
     M_Unitary = (-1j * H).expm()
     M_gate = UnitaryGate(M_Unitary)
+    TRYG = [[1/sqrt(2), 1/sqrt(2)], [1/sqrt(2)*1j, -1/sqrt(2)*1j]]
+    TRYG  = UnitaryGate(TRYG , label=r'$Y_T$')
 
     def get_values_from_csv(file_path, row_number):
         """
@@ -247,7 +264,17 @@ def Implement(Steps, omega, kappa, backend, shots, qubits):
         # Start the collisional model for an arbitrary number of steps
         for i in range(j):
             qc.append(M_gate, [q1, q0])
-            qc.h(q1)
+
+            if m == "X":
+                qc.h(q1)
+                print("x is done")
+            elif m == "Z":
+                pass
+                print("Z is done")
+            else:
+                qc.append(TRYG, q1)
+                print('Y is done')
+
             qc.measure(q1, creg[i])
             #qc.barrier()
             with qc.if_test((creg[i], 1)):

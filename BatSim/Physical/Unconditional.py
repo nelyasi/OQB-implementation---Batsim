@@ -12,7 +12,7 @@ from math import pi, sqrt
 from itertools import product
 import os
 
-def Implement(Steps, omega, kappa, backend, shots, qubits):
+def Implement(Steps, omega, kappa, backend, shots, qubits, m):
     """
     Calculate the Energy and Ergotropy of a quantum battery system over a series of steps.
 
@@ -144,7 +144,7 @@ def Implement(Steps, omega, kappa, backend, shots, qubits):
 
 
 
-def Theory(Steps, omega, kappa, pa, pd):
+def Theory(Steps, omega, kappa, pa, pd, m):
     """
     Simulate the energy and ergotropy of a quantum battery with noise over a number of steps.
 
