@@ -45,9 +45,7 @@ This repository contains several notebooks, each with a specific purpose:
 
 -**RunMe_Main**: This main notebook executes our proposed protocol and model on IBM devices, generating final results and plots based on selected Hamiltonian parameters.
 
--**RunJobIDs_Online**: This notebook connects directly to the IBM Cloud to retrieve and download data using Job IDs, allowing for easy access to plot results shown in the paper.
-
--**RunJobIDs_Offline**: For offline access, we’ve saved jobs in `.json` format in the "Jobs" folder. This notebook enables result retrieval without an internet connection. 
+-**RunJobIDs_Offline**: For offline access, we have saved jobs in `.json` format in the "Jobs" folder. This notebook enables result retrieval without an internet connection. 
 
 
 ## RunMe_Main
@@ -102,9 +100,9 @@ Daemonic_Theory = [xi - yi for xi, yi in zip(Energy_Theory, Passive_Theory)]
 Daemonic_Im = [xi - yi for xi, yi in zip(Energy_Im, Passive_Im)]
 ```
 
-## RunJobIDs_Online
+## RunJobIDs_Offline
 
-This notebook connects directly to IBM systems to retrieve data for the plots shown in the paper, requiring an internet connection. Each run generates two plots: one comparing the noisy and ideal models, and another showing the ideal results independently. 
+This notebook connects directly to IBM systems to retrieve data for the plots shown in the paper, without requiring an internet connection. Each run generates two plots: one comparing the noisy and ideal models, and another showing the ideal results independently. 
 
 As described in the paper, there are four plots for each Hamiltonian parameter set, with \(\kappa\) values of 1 or 2. To produce the plots, set \(\kappa\) to either 1 or 2 and adjust `figure_num` from 0 to 3 to generate all four plots.
 
@@ -115,16 +113,6 @@ kappa = 1 # coupling parameter for the physical Hamiltonian model
 shots = 10000  # Number of shots for running the circuit
 figure_num = 0 #In the paper, there are four samples for the two modes of paramters \kappa =  1 or 2. To have the first, seocond, third and the fourth plots, you have to put 0, 1, 2 and 3 respectively 
 ```
-
-
-
-
-
-## RunJobIDs_Offline
-
-
-The usage of this notebook is the same as the previous one, with the only difference being that the jobs are downloaded locally in the "Jobs" folder in JSON format, allowing use without an internet connection.
-
 
 ## Authors 
 Seyed Navid Elyasi, Matteo A. C. Rossi, Marco G. Genoni

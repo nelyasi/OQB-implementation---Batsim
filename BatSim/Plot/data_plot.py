@@ -111,7 +111,7 @@ def compare(std_dev, std_devIdeal, Ergotropy_TheoryIdeal, error, Ergotropy_ImIde
                 plt.plot(x_axis, Daemonic_Theory, color='violet', linestyle='dashed', linewidth = 1,
                         marker= "v", markerfacecolor='violet', markersize=4,  label = r'$\overline{\mathcal{E}}_{\{\tilde{\Pi}_{{\bf a}_n}\}}^{\sf noisy}$')
                 plt.plot(x_axis, Daemonic_TheoryIdeal, color='red', linestyle='dashed', linewidth = 1,
-            marker= ">", markerfacecolor='red', markersize=4,  label = r'$\overline{\mathcal{E}}_{\{\tilde{\Pi}_{{\bf a}_n}\}}^{\sf ideal}$')
+                        marker= ">", markerfacecolor='red', markersize=4,  label = r'$\overline{\mathcal{E}}_{\{\tilde{\Pi}_{{\bf a}_n}\}}^{\sf ideal}$')
                 plt.plot(x_axis, Ergotropy_TheoryIdeal, color='green', linestyle='dashed', linewidth = 1,
                         marker='^', markerfacecolor='green', markersize=4, label = r'$\mathcal{E}_{unc,{\sf n}}^{\sf ideal}$')
                 plt.errorbar(x_axis, Daemonic_Im, yerr=std_dev, color='orange', linestyle='dashed', fmt='-o', markersize=4, label= r'$\overline{\mathcal{W}}_{\{\tilde{\Pi}_{{\bf a}_n},\hat{U}_{{\bf a}_n}^{\sf noisy} \} }$')
@@ -122,7 +122,7 @@ def compare(std_dev, std_devIdeal, Ergotropy_TheoryIdeal, error, Ergotropy_ImIde
         elif noise == False:
                 plt.errorbar(x_axis, Daemonic_ImIdeal, yerr=std_dev, color='black', linestyle='dashed', fmt='-D', markersize=4, label= r'$\overline{\mathcal{W}}_{\{\tilde{\Pi}_{{\bf a}_n},\hat{U}_{{\bf a}_n}^{\sf ideal} \} }$')
                 plt.plot(x_axis, Daemonic_TheoryIdeal, color='red', linestyle='dashed', linewidth = 1,
-            marker= ">", markerfacecolor='red', markersize=4,  label = r'$\overline{\mathcal{E}}_{\{\tilde{\Pi}_{{\bf a}_n}\}}^{\sf ideal}$')
+                         marker= ">", markerfacecolor='red', markersize=4,  label = r'$\overline{\mathcal{E}}_{\{\tilde{\Pi}_{{\bf a}_n}\}}^{\sf ideal}$')
                 plt.plot(x_axis, Ergotropy_TheoryIdeal, color='green', linestyle='dashed', linewidth = 1,
                          marker='^', markerfacecolor='green', markersize=4, label = r'$\mathcal{E}_{unc,{\sf n}}^{\sf ideal}$')
                 pass
