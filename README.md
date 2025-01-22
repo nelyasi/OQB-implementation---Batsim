@@ -104,7 +104,7 @@ Daemonic_Im = [xi - yi for xi, yi in zip(Energy_Im, Passive_Im)]
 
 This notebook connects directly to downloaded data from IBM systems for the plots shown in the paper, without requiring an internet connection. Each run generates two plots: one comparing the noisy and ideal models, and another showing the ideal results independently. 
 
-As described in the paper, there are four plots for each Hamiltonian parameter set, with \(\kappa\) values of 1 or 2. To produce the plots, set \(\kappa\) to either 1 or 2 and adjust `figure_num` from 0 to 3 to generate all four plots.
+As described in the paper, there are four plots for each Hamiltonian parameter set, with κ values of 1 or 2. To produce the plots, set κ to either 1 or 2 and adjust `figure_num` from 0 to 3 to generate all four plots.
 
 ```python
 Steps = 10  # Number of steps for the collisional model
