@@ -5,7 +5,7 @@
 
 ## Overview
 
-In this repository, we provide a collection of notebooks designed for easy reproduction of the plots shown in the paper titled ["Experimental simulation of daemonic work extraction in open quantum batteries on a digital quantum computer"](https://arxiv.org/abs/2410.16567). To streamline the code, all necessary functions have been consolidated into a package called "BatSim" (Battery Simulation), with its components detailed below.
+In this repository, we provide a collection of notebooks designed for easy reproduction of the plots shown in the paper titled ["Experimental simulation of daemonic work extraction in open quantum batteries on a digital quantum computer", arXiv:2410.16567](https://arxiv.org/abs/2410.16567). To streamline the code, all necessary functions have been consolidated into a package called "BatSim" (Battery Simulation), with its components detailed below.
 
 
 ## Package Structure
@@ -36,7 +36,7 @@ This sub-package is designed for plotting the results in two modes: noisy and id
 To install the BatSim package, clone the repository and install the required dependencies:
 
 ```bash
-git clone https://github.com/your-repo/BatSim.git
+git clone https://github.com/nelyasi/OQB-implementation---Batsim.git
 cd BatSim
 ```
 ## Notebook Structure
@@ -102,7 +102,7 @@ Daemonic_Im = [xi - yi for xi, yi in zip(Energy_Im, Passive_Im)]
 
 ## RunJobIDs_Offline
 
-This notebook connects directly to downloaded data from IBM systems for the plots shown in the paper, without requiring an internet connection. Each run generates two plots: one comparing the noisy and ideal models, and another showing the ideal results independently. 
+This notebook loads directly downloaded data from IBM systems for the plots shown in the paper, without requiring an internet connection. Each run generates two plots: one comparing the noisy and ideal models, and another showing the ideal results independently. 
 
 As described in the paper, there are four plots for each Hamiltonian parameter set, with κ values of 1 or 2. To produce the plots, set κ to either 1 or 2 and adjust `figure_num` from 0 to 3 to generate all four plots.
 
@@ -115,9 +115,4 @@ figure_num = 0 #In the paper, there are four samples for the two modes of paramt
 ```
 
 ## Authors 
-Seyed Navid Elyasi, Matteo A. C. Rossi, Marco G. Genoni
-
-
-
-```
-
+Seyed Navid Elyasi, [Matteo A. C. Rossi](https://github.com/matteoacrossi), Marco G. Genoni
